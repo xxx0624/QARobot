@@ -1,24 +1,37 @@
 package com.robot.application.lucene.impl;
 
+import com.carrotsearch.ant.tasks.junit4.dependencies.com.google.common.collect.Lists;
 import com.robot.application.lucene.Index;
+import com.robot.bean.QA;
+import com.robot.util.FileService;
+import com.robot.util.QABeanService;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.FieldType;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by xing on 2016/9/21.
  */
 public class indexImpl implements Index {
+
+    private static Logger logger = LoggerFactory.getLogger(indexImpl.class);
+
     @Override
-    public int addIndex(IndexWriter iw, String name, String value, FieldType type) {
-        if(!name.equals("") && !value.equals("") && type!=null && iw!=null){
+    public int addIndex(IndexWriter iw, QA qa) {
+        if(qa != null && iw != null){
             Document doc = new Document();
-            doc.add(new Field(name, value, type));
+            List<Field> fieldList = getFieldList(qa);
+            for(Field field:fieldList){
+                doc.add(field);
+            }
             try {
                 iw.addDocument(doc);
             } catch (IOException e) {
@@ -30,11 +43,14 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int updateIndex(IndexWriter iw, String targetField, String name, String value, FieldType type){
-        if(!name.equals("") && !value.equals("") && type!=null && iw!=null){
+    public int updateIndex(IndexWriter iw, QA qa){
+        if(qa != null && iw != null){
             Document doc = new Document();
-            Term term = new Term(targetField, name);
-            doc.add(new Field(name, value, type));
+            List<Field> fieldList = getFieldList(qa);
+            Term term = new Term(QA.Field.QAID, qa.getQaId());
+            for(Field field:fieldList){
+                doc.add(field);
+            }
             try {
                 iw.updateDocument(term, doc);
             } catch (IOException e) {
@@ -46,16 +62,77 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int rebuildAllIndex() {
+    public int deleteIndex(IndexWriter iw, QA qa) {
+        if (qa != null && iw != null) {
+            List<Field> fieldList = getFieldList(qa);
+            Term term = new Term(QA.Field.QAID, qa.getQaId());
+            try {
+                iw.deleteDocuments(term);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return 1;
+        }
         return 0;
     }
 
     @Override
-    public int deleteIndex(File file) {
+    public int rebuildAllIndex(String faqFolderPath, String indexFolderPath, IndexWriter iw) {
+        logger.info("开始删除索引...", indexFolderPath);
+        File fileFaq = new File(faqFolderPath);
+        deleteAllIndex(indexFolderPath);
+        logger.info("删除索引成功...", indexFolderPath);
+        if(fileFaq.isDirectory() == true){
+            logger.info("开始重建索引...", faqFolderPath);
+            int cnt = indexFolder(faqFolderPath, iw);
+            logger.info("索引重建完成，重建{[]}条", cnt);
+            return cnt;
+        }
         return 0;
     }
 
-    void deleteFolder(String folderPath){
-
+    @Override
+    public int deleteAllIndex(String indexFolderPath){
+        FileService.deleteFolder(indexFolderPath);
+        return 1;
     }
+
+    int indexFolder(String path, IndexWriter iw){
+        File file = new File(path);
+        int cnt = 0;
+        if(file.isFile()){
+            QA qa = new QA();
+            String html = FileService.read(path, "utf-8");
+            qa.setQuestion(QABeanService.getQuestion(html));
+            qa.setAnswer(QABeanService.getAnswer(html));
+            qa.setQaId(FileService.getStringMD5String(qa.getQuestion() + qa.getAnswer()));
+            cnt += addIndex(iw, qa);
+        }
+        else{
+            String[] files = file.list();
+            for(int i = 0; i < files.length; i ++){
+                cnt += indexFolder(path + '\\' + files[i], iw);
+            }
+        }
+        return cnt;
+    }
+
+
+
+    List<Field> getFieldList(QA qa){
+        List<Field> fieldList = Lists.newArrayList();
+        Field field1 = new Field(QA.Field.QUESTION, preSolve(qa.getQuestion()), TextField.TYPE_STORED);
+        Field field2 = new Field(QA.Field.ANSWER, preSolve(qa.getQuestion()), TextField.TYPE_STORED);
+        Field field3 = new Field(QA.Field.QAID, qa.getQaId(), TextField.TYPE_STORED);
+        fieldList.add(field3);
+        fieldList.add(field1);
+        fieldList.add(field2);
+        return fieldList;
+    }
+
+    String preSolve(String sentence){
+        sentence = sentence.toLowerCase();
+        return sentence;
+    }
+
 }
