@@ -12,6 +12,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.List;
 /**
  * Created by xing on 2016/9/21.
  */
+@Service
 public class indexImpl implements Index {
 
     private static Logger logger = LoggerFactory.getLogger(indexImpl.class);

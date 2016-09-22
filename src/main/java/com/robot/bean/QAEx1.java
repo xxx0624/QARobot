@@ -6,8 +6,17 @@ package com.robot.bean;
 public class QAEx1 {
     private String question;
     private String answer;
+    private String qaId;
     private int sortNum;
     private String score;
+
+    public String getQaId() {
+        return qaId;
+    }
+
+    public void setQaId(String qaId) {
+        this.qaId = qaId;
+    }
 
     public int getSortNum() {
         return sortNum;
