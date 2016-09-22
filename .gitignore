@@ -1,5 +1,7 @@
 .idea/
+target/
 *.jar
 *.class
 *.html
 *.txt
+*.iml
