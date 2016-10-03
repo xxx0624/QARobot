@@ -6,12 +6,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-  <display-name>QA robot</display-name>
+  <display-name>QA-robot</display-name>
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      classpath*:webmvc-config.xml
+      classpath:webmvc-config.xml
     </param-value>
   </context-param>
 
@@ -19,7 +19,7 @@
   <context-param>
     <param-name>log4jConfigLocation</param-name>
     <param-value>
-      classpath*:config.local/log4j.xml
+      classpath:config.local/log4j.xml
     </param-value>
   </context-param>
   <!-- 配置log4j.xml变量 -->
@@ -71,5 +71,9 @@
     <servlet-name>mvc-dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
 
 </web-app>
