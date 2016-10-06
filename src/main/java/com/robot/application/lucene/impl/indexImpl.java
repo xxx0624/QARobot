@@ -2,6 +2,7 @@ package com.robot.application.lucene.impl;
 
 import com.carrotsearch.ant.tasks.junit4.dependencies.com.google.common.collect.Lists;
 import com.robot.application.lucene.Index;
+import com.robot.application.lucene.util.IndexWriterGetter;
 import com.robot.bean.QA;
 import com.robot.util.FileService;
 import com.robot.util.QABeanService;
@@ -12,6 +13,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -27,8 +29,13 @@ public class indexImpl implements Index {
     private static Logger logger = LoggerFactory.getLogger(indexImpl.class);
 
     @Override
-    public int addIndex(IndexWriter iw, QA qa) {
-        if(qa != null && iw != null){
+    public int addIndex(QA qa, String indexDirPath, IndexWriter iw) {
+        //IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
+        if(iw == null){
+            logger.error("add index fail");
+            return 0;
+        }
+        if(qa != null){
             Document doc = new Document();
             List<Field> fieldList = getFieldList(qa);
             for(Field field:fieldList){
@@ -45,8 +52,13 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int updateIndex(IndexWriter iw, QA qa){
-        if(qa != null && iw != null){
+    public int updateIndex(QA qa, String indexDirPath){
+        IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
+        if(iw == null){
+            logger.error("update index fail");
+            return 0;
+        }
+        if(qa != null){
             Document doc = new Document();
             List<Field> fieldList = getFieldList(qa);
             Term term = new Term(QA.Field.QAID, qa.getQaId());
@@ -64,8 +76,13 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int deleteIndex(IndexWriter iw, QA qa) {
-        if (qa != null && iw != null) {
+    public int deleteIndex(QA qa, String indexDirPath) {
+        IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
+        if(iw == null){
+            logger.error("delete index fail");
+            return 0;
+        }
+        if (qa != null) {
             List<Field> fieldList = getFieldList(qa);
             Term term = new Term(QA.Field.QAID, qa.getQaId());
             try {
@@ -79,18 +96,23 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int rebuildAllIndex(String faqFolderPath, String indexFolderPath, IndexWriter iw) {
+    public int rebuildAllIndex(String faqFolderPath, String indexFolderPath) {
+        IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexFolderPath);
+        if(iw == null){
+            logger.error("add allIndex fail");
+            return 0;
+        }
         logger.info("开始删除索引...", indexFolderPath);
         File fileFaq = new File(faqFolderPath);
         deleteAllIndex(indexFolderPath);
         logger.info("删除索引成功...", indexFolderPath);
-        if(fileFaq.isDirectory() == true){
+        //if(fileFaq.isDirectory() == true){
             logger.info("开始重建索引...", faqFolderPath);
-            int cnt = indexFolder(faqFolderPath, iw);
+            int cnt = indexFolder(faqFolderPath, indexFolderPath, iw);
             logger.info("索引重建完成，重建{[]}条", cnt);
             return cnt;
-        }
-        return 0;
+        //}
+        //return 0;
     }
 
     @Override
@@ -99,7 +121,12 @@ public class indexImpl implements Index {
         return 1;
     }
 
-    int indexFolder(String path, IndexWriter iw){
+    int indexFolder(String path, String indexDirPath, IndexWriter iw){
+        //IndexWriter iw = iwGetter.getIndexWriter(indexDirPath);
+        if(iw == null){
+            logger.error("index the folder fail");
+            return 0;
+        }
         File file = new File(path);
         int cnt = 0;
         if(file.isFile()){
@@ -108,17 +135,16 @@ public class indexImpl implements Index {
             qa.setQuestion(QABeanService.getQuestion(html));
             qa.setAnswer(QABeanService.getAnswer(html));
             qa.setQaId(FileService.getStringMD5String(qa.getQuestion() + qa.getAnswer()));
-            cnt += addIndex(iw, qa);
+            cnt += addIndex(qa, indexDirPath, iw);
         }
         else{
             String[] files = file.list();
             for(int i = 0; i < files.length; i ++){
-                cnt += indexFolder(path + '\\' + files[i], iw);
+                cnt += indexFolder(path + '\\' + files[i], indexDirPath, iw);
             }
         }
         return cnt;
     }
-
 
 
     List<Field> getFieldList(QA qa){

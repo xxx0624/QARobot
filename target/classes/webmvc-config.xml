@@ -15,8 +15,10 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <mvc:resources location="/WEB-INF/build/" mapping="/build/**" />
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="prefix" value="/WEB-INF/page/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 

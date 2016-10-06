@@ -1,6 +1,6 @@
 package com.robot;
 
-import com.robot.application.segmentWord.MyIKAnalyzer;
+import com.robot.application.segmentWord.MySegmentWord;
 import com.robot.bean.Word;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import java.util.List;
 public class testIk extends BaseTest{
 
     @Autowired
-    private MyIKAnalyzer myIKAnalyzer;
+    private MySegmentWord mySegmentWord;
 
     @Test
     public void test(){
-        String sentence = "你是我的小苹果";
-        List<Word> words = myIKAnalyzer.getWordList(sentence, 1);
+        String sentence = "这是一个中文分词的例子，你可以直接运行它！";
+        List<Word> words = mySegmentWord.getWordList(sentence, 1);
         for(Word w:words){
             System.out.println(w.getWord());
         }

@@ -100,7 +100,10 @@ public class FileService {
         else{
             String[] files = file.list();
             for(int i = 0; i < files.length; i ++){
-                deleteFolder(folderPath + '\\' + files[i]);
+                System.out.println(file.getAbsolutePath());
+                String newPath = folderPath.charAt(folderPath.length() - 1) == '/' ?
+                    folderPath + files[i] : folderPath + '/' + files[i];
+                deleteFolder(newPath);
             }
         }
     }

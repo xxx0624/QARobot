@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
         "classpath*:webmvc-config.xml",
-        "classpath*:config.local/log4j.xml"
+        "classpath*:config/log4j.xml"
 })
 public class BaseTest {
 }
