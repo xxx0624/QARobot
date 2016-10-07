@@ -58,9 +58,9 @@
                 type: "GET",
                 url: "http://localhost:8080/index/rebuildIndex",
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     this.refs.btnDomResultRef.innerText = data.message + "( " + data.data + " )";
-                    console.log(this.refs.btnDomResultRef);
+                    //console.log(this.refs.btnDomResultRef);
                 }.bind(this)
             });
         },
