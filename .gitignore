@@ -5,3 +5,4 @@ target/*
 *.html
 *.txt
 *.iml
+*.log
