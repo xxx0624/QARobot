@@ -8,8 +8,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.springframework.stereotype.Service;
-import org.wltea.analyzer.cfg.DefaultConfig;
-import org.wltea.analyzer.dic.Dictionary;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
@@ -22,84 +20,10 @@ import java.util.List;
 @Service
 public class MySegmentWordImpl implements MySegmentWord {
 
-    @Override
-    public List<Word> getWordList(String sentene, int segementWordTye) {
-        List<Word> words = Lists.newArrayList();
-        switch (segementWordTye) {
-            case 1:
-                words = getMaxWordList(sentene);
-                break;
-            case 2:
-                words = getMinWordList(sentene);
-                break;
-            default:
-            {}
-        }
-        return words;
-    }
-
-    public List<Word> getMaxWordList(String sentence){
-        //Dictionary.initial(DefaultConfig.getInstance());
-        List<Word> wordList = Lists.newArrayList();
-        Analyzer analyzer = new IKAnalyzer(true);
-        StringReader stringReader = new StringReader(sentence);
-        TokenStream ts = null;
-        try {
-            ts = analyzer.tokenStream("", stringReader);
-            ts.reset();
-            CharTermAttribute term = ts.getAttribute(CharTermAttribute.class);
-            while(ts.incrementToken()){
-                wordList.add(new Word(term.toString()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (ts != null) {
-                try {
-                    ts.end();
-                    ts.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return wordList;
-    }
-
-    public List<Word> getMinWordList(String sentence){
-        //Dictionary.initial(DefaultConfig.getInstance());
-        List<Word> wordList = Lists.newArrayList();
-        Analyzer analyzer = new IKAnalyzer(false);
-        StringReader stringReader = new StringReader(sentence);
-        TokenStream ts = null;
-        try {
-            ts = analyzer.tokenStream("", stringReader);
-            ts.reset();
-            CharTermAttribute term = ts.getAttribute(CharTermAttribute.class);
-            while(ts.incrementToken()){
-                wordList.add(new Word(term.toString()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (ts != null) {
-                try {
-                    ts.end();
-                    ts.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return wordList;
-    }
-
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         List<Word> ws = new MySegmentWordImpl().getMaxWordList("这是一个中文分词的例子，你可以直接运行它！");
-        for(Word w : ws){
+        for (Word w : ws) {
             System.out.println(w);
         }
 
@@ -142,5 +66,77 @@ public class MySegmentWordImpl implements MySegmentWord {
             }
         }
         */
+    }
+
+    @Override
+    public List<Word> getWordList(String sentene, int segementWordTye) {
+        List<Word> words = Lists.newArrayList();
+        switch (segementWordTye) {
+            case 1:
+                words = getMaxWordList(sentene);
+                break;
+            case 2:
+                words = getMinWordList(sentene);
+                break;
+            default: {
+            }
+        }
+        return words;
+    }
+
+    public List<Word> getMaxWordList(String sentence) {
+        //Dictionary.initial(DefaultConfig.getInstance());
+        List<Word> wordList = Lists.newArrayList();
+        Analyzer analyzer = new IKAnalyzer(true);
+        StringReader stringReader = new StringReader(sentence);
+        TokenStream ts = null;
+        try {
+            ts = analyzer.tokenStream("", stringReader);
+            ts.reset();
+            CharTermAttribute term = ts.getAttribute(CharTermAttribute.class);
+            while (ts.incrementToken()) {
+                wordList.add(new Word(term.toString()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (ts != null) {
+                try {
+                    ts.end();
+                    ts.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return wordList;
+    }
+
+    public List<Word> getMinWordList(String sentence) {
+        //Dictionary.initial(DefaultConfig.getInstance());
+        List<Word> wordList = Lists.newArrayList();
+        Analyzer analyzer = new IKAnalyzer(false);
+        StringReader stringReader = new StringReader(sentence);
+        TokenStream ts = null;
+        try {
+            ts = analyzer.tokenStream("", stringReader);
+            ts.reset();
+            CharTermAttribute term = ts.getAttribute(CharTermAttribute.class);
+            while (ts.incrementToken()) {
+                wordList.add(new Word(term.toString()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (ts != null) {
+                try {
+                    ts.end();
+                    ts.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return wordList;
     }
 }

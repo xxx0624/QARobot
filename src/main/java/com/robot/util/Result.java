@@ -18,12 +18,19 @@ public class Result<T> {
     private Integer code;
     private String message;
 
+    public Result() {
+    }
+
     public static Integer getSUCCESS() {
         return SUCCESS;
     }
 
     public static Integer getFAILED() {
         return FAILED;
+    }
+
+    public static <T> Builder<T> builder() {
+        return new Builder<T>();
     }
 
     public T getData() {
@@ -50,16 +57,13 @@ public class Result<T> {
         this.message = message;
     }
 
-    public static <T> Builder<T> builder() {
-        return new Builder<T>();
-    }
-
     public static class Builder<T> {
         private T data;
         private Integer code;
         private String message;
 
-        public Builder() {}
+        public Builder() {
+        }
 
         public Result build() {
             Assert.notNull(data, "data不能为空");
@@ -72,7 +76,7 @@ public class Result<T> {
             return result;
         }
 
-        public Builder data(T data, Integer code, String message){
+        public Builder data(T data, Integer code, String message) {
             this.data = data;
             this.code = code;
             this.message = message;
@@ -135,8 +139,6 @@ public class Result<T> {
             return this;
         }
     }
-
-    public Result() {}
 
 }
 

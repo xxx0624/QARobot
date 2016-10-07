@@ -13,18 +13,18 @@ public class FileService {
 
     private static Logger logger = LoggerFactory.getLogger(FileService.class);
 
-    private static char md5Chars[] = { '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    private static char md5Chars[] = {'0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-    public static String read(String fileName, String encoding){
+    public static String read(String fileName, String encoding) {
         StringBuilder sb = new StringBuilder();
         try {
             FileInputStream fis = new FileInputStream(fileName);
             InputStreamReader isr = new InputStreamReader(fis, encoding);
             BufferedReader br = new BufferedReader(isr);
             String line = "";
-            while((line = br.readLine()) != null){
-                sb.append(line+'\n');
+            while ((line = br.readLine()) != null) {
+                sb.append(line + '\n');
             }
             br.close();
             isr.close();
@@ -92,22 +92,20 @@ public class FileService {
         stringbuffer.append(c1);
     }
 
-    public static void deleteFolder(String folderPath){
+    public static void deleteFolder(String folderPath) {
         File file = new File(folderPath);
-        if(file.isFile()){
-            if (folderPath.equals("write.lock")){
+        if (file.isFile()) {
+            if (folderPath.equals("write.lock")) {
 
-            }
-            else {
+            } else {
                 file.delete();
             }
-        }
-        else{
+        } else {
             String[] files = file.list();
-            for(int i = 0; i < files.length; i ++){
+            for (int i = 0; i < files.length; i++) {
                 System.out.println(file.getAbsolutePath());
                 String newPath = folderPath.charAt(folderPath.length() - 1) == '/' ?
-                    folderPath + files[i] : folderPath + '/' + files[i];
+                        folderPath + files[i] : folderPath + '/' + files[i];
                 deleteFolder(newPath);
             }
         }

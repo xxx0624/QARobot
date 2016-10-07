@@ -13,7 +13,6 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.Term;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -31,14 +30,14 @@ public class indexImpl implements Index {
     @Override
     public int addIndex(QA qa, String indexDirPath, IndexWriter iw) {
         //IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
-        if(iw == null){
+        if (iw == null) {
             logger.error("add index fail");
             return 0;
         }
-        if(qa != null){
+        if (qa != null) {
             Document doc = new Document();
             List<Field> fieldList = getFieldList(qa);
-            for(Field field:fieldList){
+            for (Field field : fieldList) {
                 doc.add(field);
             }
             try {
@@ -52,17 +51,17 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int updateIndex(QA qa, String indexDirPath){
+    public int updateIndex(QA qa, String indexDirPath) {
         IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
-        if(iw == null){
+        if (iw == null) {
             logger.error("update index fail");
             return 0;
         }
-        if(qa != null){
+        if (qa != null) {
             Document doc = new Document();
             List<Field> fieldList = getFieldList(qa);
             Term term = new Term(QA.Field.QAID, qa.getQaId());
-            for(Field field:fieldList){
+            for (Field field : fieldList) {
                 doc.add(field);
             }
             try {
@@ -78,7 +77,7 @@ public class indexImpl implements Index {
     @Override
     public int deleteIndex(QA qa, String indexDirPath) {
         IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexDirPath);
-        if(iw == null){
+        if (iw == null) {
             logger.error("delete index fail");
             return 0;
         }
@@ -98,7 +97,7 @@ public class indexImpl implements Index {
     @Override
     public int rebuildAllIndex(String faqFolderPath, String indexFolderPath) {
         IndexWriter iw = new IndexWriterGetter().getIndexWriter(indexFolderPath);
-        if(iw == null){
+        if (iw == null) {
             logger.error("add allIndex fail");
             return 0;
         }
@@ -113,19 +112,19 @@ public class indexImpl implements Index {
     }
 
     @Override
-    public int deleteAllIndex(String indexFolderPath){
+    public int deleteAllIndex(String indexFolderPath) {
         FileService.deleteFolder(indexFolderPath);
         return 1;
     }
 
-    int indexFolder(String path, String indexDirPath, IndexWriter iw){
-        if(iw == null){
+    int indexFolder(String path, String indexDirPath, IndexWriter iw) {
+        if (iw == null) {
             logger.error("index the folder fail");
             return 0;
         }
         File file = new File(path);
         int cnt = 0;
-        if(file.isFile()){
+        if (file.isFile()) {
             logger.info("正在建索引:{}", file.getAbsolutePath());
             QA qa = new QA();
             String html = FileService.read(path, "utf-8");
@@ -133,10 +132,9 @@ public class indexImpl implements Index {
             qa.setAnswer(QABeanService.getAnswer(html));
             qa.setQaId(FileService.getStringMD5String(qa.getQuestion() + qa.getAnswer()));
             cnt += addIndex(qa, indexDirPath, iw);
-        }
-        else{
+        } else {
             String[] files = file.list();
-            for(int i = 0; i < files.length; i ++){
+            for (int i = 0; i < files.length; i++) {
                 cnt += indexFolder(path + '\\' + files[i], indexDirPath, iw);
             }
         }
@@ -144,7 +142,7 @@ public class indexImpl implements Index {
     }
 
 
-    List<Field> getFieldList(QA qa){
+    List<Field> getFieldList(QA qa) {
         List<Field> fieldList = Lists.newArrayList();
         Field field1 = new Field(QA.Field.QUESTION, preSolve(qa.getQuestion()), TextField.TYPE_STORED);
         Field field2 = new Field(QA.Field.ANSWER, preSolve(qa.getQuestion()), TextField.TYPE_STORED);
@@ -155,7 +153,7 @@ public class indexImpl implements Index {
         return fieldList;
     }
 
-    String preSolve(String sentence){
+    String preSolve(String sentence) {
         sentence = sentence.toLowerCase();
         return sentence;
     }

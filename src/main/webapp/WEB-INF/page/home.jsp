@@ -26,12 +26,21 @@
         getInitialState: function () {
             return {value: 'Init',backColor: 'red'};
         },
+        request: function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/segmentword/1",
+                success: function (data) {
+                    this.refs.showSegmentWordRef.innerText = data.message + "( " + data.data + " )";
+                }.bind(this)
+            });
+        },
         handleChange: function (e) {
             this.setState({value: e.target.value});
         },
         handleClick: function (e) {
             this.setState({backColor: this.state.backColor === 'red'?'green':'red'});
-            console.log(this.refs.inputDOMRef.value);
+            this.request();
         },
         render: function () {
             var value = this.state.value;
@@ -42,6 +51,7 @@
                     <button onClick={this.handleClick} style={{backgroundColor: color}}>
                         Search
                     </button>
+                        <label ref="showSegmentWordRef"></label>
                     </div>
             );
         }
@@ -59,13 +69,10 @@
                 url: "http://localhost:8080/index/rebuildIndex",
                 success: function (data) {
                     //console.log(data);
-                    this.refs.btnDomResultRef.innerText = data.message + "( " + data.data + " )";
+                    this.refs.showBuildIndexRef.innerText = data.message + "( " + data.data + " )";
                     //console.log(this.refs.btnDomResultRef);
                 }.bind(this)
             });
-        },
-        componentDidMount: function () {
-            
         },
         handleClick: function (e) {
             console.log("send a request");
@@ -77,7 +84,7 @@
                     <button onClick={this.handleClick}>
                         Build Index
                     </button>
-                    <label ref="btnDomResultRef"></label>
+                    <label ref="showBuildIndexRef"></label>
                     </div>
             );
         }
