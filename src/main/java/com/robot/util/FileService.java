@@ -95,7 +95,12 @@ public class FileService {
     public static void deleteFolder(String folderPath){
         File file = new File(folderPath);
         if(file.isFile()){
-            file.delete();
+            if (folderPath.equals("write.lock")){
+
+            }
+            else {
+                file.delete();
+            }
         }
         else{
             String[] files = file.list();

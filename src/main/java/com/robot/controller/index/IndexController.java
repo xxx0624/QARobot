@@ -1,6 +1,9 @@
 package com.robot.controller.index;
 
 import com.robot.application.lucene.Index;
+import com.robot.util.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,17 +20,22 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/index")
 public class IndexController {
+
+    private static Logger logger = LoggerFactory.getLogger(IndexController.class);
+
     @Autowired
     private Index index;
 
     @RequestMapping(value = "/rebuildIndex")
     @ResponseBody
-    public Integer rebuildIndex(){
+    public Result rebuildIndex(){
         String faqFolderPath = "document";
         Resource resource = new ClassPathResource(faqFolderPath);
         try {
             faqFolderPath = resource.getURL().getPath();
         } catch (IOException e) {
+            logger.error("源文件夹不存在:{}", faqFolderPath);
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         String indexFolderPath = "index";
@@ -35,10 +43,12 @@ public class IndexController {
         try {
             indexFolderPath = resource.getURL().getPath();
         } catch (IOException e) {
+            logger.error("索引文件夹不存在:{}", indexFolderPath);
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         Integer res = index.rebuildAllIndex(faqFolderPath, indexFolderPath);
-        return res;
+        return Result.builder().data(res).success().build();
     }
 
 }

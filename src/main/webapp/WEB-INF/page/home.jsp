@@ -59,6 +59,8 @@
                 url: "http://localhost:8080/index/rebuildIndex",
                 success: function (data) {
                     console.log(data);
+                    this.refs.btnDomResultRef.innerText = data.message + "( " + data.data + " )";
+                    console.log(this.refs.btnDomResultRef);
                 }.bind(this)
             });
         },
@@ -71,9 +73,12 @@
         },
         render: function () {
             return (
+                    <div>
                     <button onClick={this.handleClick}>
-                Build Index
-            </button>
+                        Build Index
+                    </button>
+                    <label ref="btnDomResultRef"></label>
+                    </div>
             );
         }
     });

@@ -106,13 +106,10 @@ public class indexImpl implements Index {
         File fileFaq = new File(faqFolderPath);
         deleteAllIndex(indexFolderPath);
         logger.info("删除索引成功...", indexFolderPath);
-        //if(fileFaq.isDirectory() == true){
-            logger.info("开始重建索引...", faqFolderPath);
-            int cnt = indexFolder(faqFolderPath, indexFolderPath, iw);
-            logger.info("索引重建完成，重建{[]}条", cnt);
-            return cnt;
-        //}
-        //return 0;
+        logger.info("开始重建索引...", faqFolderPath);
+        int cnt = indexFolder(faqFolderPath, indexFolderPath, iw);
+        logger.info("索引重建完成，重建{}条", cnt);
+        return cnt;
     }
 
     @Override
@@ -122,7 +119,6 @@ public class indexImpl implements Index {
     }
 
     int indexFolder(String path, String indexDirPath, IndexWriter iw){
-        //IndexWriter iw = iwGetter.getIndexWriter(indexDirPath);
         if(iw == null){
             logger.error("index the folder fail");
             return 0;
@@ -130,6 +126,7 @@ public class indexImpl implements Index {
         File file = new File(path);
         int cnt = 0;
         if(file.isFile()){
+            logger.info("正在建索引:{}", file.getAbsolutePath());
             QA qa = new QA();
             String html = FileService.read(path, "utf-8");
             qa.setQuestion(QABeanService.getQuestion(html));
