@@ -13,4 +13,9 @@ public class Index {
     public ModelAndView home() {
         return new ModelAndView("home");
     }
+
+    @RequestMapping(value = "/qa")
+    public ModelAndView tag(){
+        return new ModelAndView("qa");
+    }
 }

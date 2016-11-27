@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.robot.dao.QADao">
+
+    <resultMap id="QA_resultmap" type="com.robot.po.QA">
+        <id column="qaId" property="qaId" />
+        <result column="question" property="question" />
+        <result column="answer" property="answer" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        qaId, question, answer
+    </sql>
+
+    <select id="selectQA" parameterType="java.lang.Integer" resultType="com.robot.po.QA">
+        SELECT * FROM QA WHERE qaId=#{id}
+    </select>
+
+</mapper>
