@@ -1,8 +1,11 @@
-.idea/*
-target/*
+.idea/
+target/
+
+
 *.jar
 *.class
 *.html
 *.txt
 *.iml
 *.log
+*.lock
