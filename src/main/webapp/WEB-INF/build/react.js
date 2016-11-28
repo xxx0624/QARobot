@@ -3455,7 +3455,7 @@ var HTMLDOMPropertyConfig = {
     itemID: 0,
     itemRef: 0,
     // results show looking glass icon and recent searches on input
-    // search fields in WebKit/Blink
+    // normalSearch fields in WebKit/Blink
     results: 0,
     // IE-only attribute that specifies security restrictions on an iframe
     // as an alternative to the sandbox attribute on IE<10

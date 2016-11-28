@@ -1,7 +1,9 @@
 package com.robot;
 
+import com.robot.application.normalSearch.Search;
 import com.robot.application.segmentWord.MySegmentWord;
 import com.robot.application.synonymWord.synonymWord;
+import com.robot.bean.QAEx2;
 import com.robot.bean.Word;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class testIk extends BaseTest{
 
     @Autowired
     private synonymWord synWord;
+
+    @Autowired
+    private Search search;
 
     @Test
     public void test(){
@@ -62,6 +67,28 @@ public class testIk extends BaseTest{
         iterator = words3.iterator();
         while(iterator.hasNext()){
             System.out.print(iterator.next().getWord() + " ");
+        }
+        //start search
+        String faqFolderPath = "document";
+        resource = new ClassPathResource(faqFolderPath);
+        try {
+            faqFolderPath = resource.getURL().getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String weightDictPath = "dict/weight.dic";
+        resource = new ClassPathResource(weightDictPath);
+        try {
+            weightDictPath = resource.getURL().getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<QAEx2> ans = search.search(words3, faqFolderPath, weightDictPath);
+        Iterator<QAEx2> it = ans.iterator();
+        System.out.println();
+        while(it.hasNext()){
+            QAEx2 qa = it.next();
+            System.out.println(qa.getScore());
         }
     }
 }

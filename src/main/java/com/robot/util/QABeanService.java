@@ -23,6 +23,16 @@ public class QABeanService {
         return meta.text();
     }
 
+    public static String getTagContent(String html, String tag){
+        int pos1 = html.indexOf(tag);
+        if(pos1 >= 0){
+            int pos2 = html.indexOf("</div>", pos1);
+            pos1 += 6;
+            return html.substring(pos1, pos2);
+        }
+        return "";
+    }
+
     public static String createSearchText(String q, String a) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
