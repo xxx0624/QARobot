@@ -37,7 +37,7 @@ public class WeightDicUtil {
                     String[] words = slist[0].split(",");
                     Double d = new Double(slist[1]);
                     for(String w:words){
-                        weightDic.put(w, d);
+                        weightDic.put(StringUtils.TRIM_STRING(w), d);
                     }
                 }
                 br.close();
