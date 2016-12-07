@@ -31,6 +31,7 @@ public class ExcelUtil {
         int synonmLeft = 4;
         int synonmRight = 5;
         BufferedWriter synonmDictWriter = new BufferedWriter(new FileWriter(synonmDictFilePath));
+        Map<String, String> synonmWords = new HashMap<String, String>();
         //weight dict
         String weightDictFilePath = dictPath + "weight-excel.dic";
         BufferedWriter weightDictWriter = new BufferedWriter(new FileWriter(weightDictFilePath));
@@ -94,11 +95,19 @@ public class ExcelUtil {
                     if(j == synonmRight && !cellString.equals("") && synonmDicts.size() == 1){
                         synonmDictWriter.append(synonmDicts.get(0));
                         String[] words = cellString.split("、");
+                        String value = "";
                         for(String w:words) {
                             if(!w.equals("")) {
                                 synonmDictWriter.append("," + w);
+                                if(value.equals("")){
+                                    value = w;
+                                }
+                                else{
+                                    value += ","+w;
+                                }
                             }
                         }
+                        synonmWords.put(synonmDicts.get(0), value);
                         synonmDictWriter.append("\n");
                     }
                     //q a
@@ -128,7 +137,18 @@ public class ExcelUtil {
             }
         }
         for(String w:weightWords.keySet()){
-            weightDictWriter.append(w+" "+weightWords.get(w)*1.0/qaList.size()+"\n");
+            if(synonmWords.containsKey(w)){
+                String[] wlist = synonmWords.get(w).split(",");
+                weightDictWriter.append(w + " " + weightWords.get(w) * 1.0 / qaList.size() + "\n");
+                for(String ws:wlist){
+                    if(!ws.equals("")) {
+                        weightDictWriter.append(ws + " " + weightWords.get(w) * 1.0 / qaList.size() + "\n");
+                    }
+                }
+            }
+            else {
+                weightDictWriter.append(w + " " + weightWords.get(w) * 1.0 / qaList.size() + "\n");
+            }
         }
         weightDictWriter.flush();
         synonmDictWriter.close();
