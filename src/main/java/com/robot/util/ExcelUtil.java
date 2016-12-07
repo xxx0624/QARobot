@@ -8,10 +8,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by xing on 2016/12/7.
@@ -37,6 +34,7 @@ public class ExcelUtil {
         //weight dict
         String weightDictFilePath = dictPath + "weight-excel.dic";
         BufferedWriter weightDictWriter = new BufferedWriter(new FileWriter(weightDictFilePath));
+        Map<String, Integer> weightWords = new HashMap<String, Integer>();
         //kb dict
         /*
         String kbDictFilePath = "";
@@ -46,8 +44,9 @@ public class ExcelUtil {
         String documentPath = "C:\\Users\\xing\\workspace\\QARobot\\src\\main\\resources\\document-excel\\";
         int qIndex = 9;
         int aIndex = 10;
+        List<String> qaList = new ArrayList<String>();
         BufferedWriter qaWriter = null;
-        //other
+        //paser excel:some special case
         Set<Integer> set = new HashSet<Integer>();
         set.add(8);
 
@@ -79,8 +78,14 @@ public class ExcelUtil {
                                 dictWriter.append(w + "\n");
                             }
                         }
-                        if(j == dictPos1) tags1 = cellString;
-                        if(j == dictpos3) tags2 = cellString;
+                        if(j == dictPos1) {
+                            tags1 = cellString;
+                            weightWords.put(tags1, 0);
+                        }
+                        if(j == dictpos3) {
+                            tags2 = cellString;
+                            weightWords.put(tags2, 0);
+                        }
                     }
                     //synonm dict
                     if(j == synonmLeft && !cellString.equals("")){
@@ -106,13 +111,26 @@ public class ExcelUtil {
                         qaWriter.append(QABeanService.createQA(qString,cellString, tags1, tags2));
                         qaWriter.flush();
                         qaWriter.close();
+                        qaList.add(qString + cellString);
                     }
                 }
             }
             synonmDictWriter.flush();
             dictWriter.flush();
-            weightDictWriter.flush();
         }
+        Iterator<String> it = qaList.iterator();
+        while(it.hasNext()){
+            String tempString = it.next();
+            for(String w:weightWords.keySet()){
+                if(tempString.contains(w)){
+                    weightWords.put(w, weightWords.get(w) + 1);
+                }
+            }
+        }
+        for(String w:weightWords.keySet()){
+            weightDictWriter.append(w+" "+weightWords.get(w)*1.0/qaList.size()+"\n");
+        }
+        weightDictWriter.flush();
         synonmDictWriter.close();
         dictWriter.close();
         weightDictWriter.close();
