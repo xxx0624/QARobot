@@ -44,4 +44,16 @@ public class QABeanService {
         sb.append("</body></html>");
         return sb.toString();
     }
+
+    public static String createQA(String q, String a, String tags1, String tags2) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">" +
+                "<head><title>Search</title></head><body>" +
+                "<div class=\"tag1\">"+tags1+"</div>" +
+                "<div class=\"tag2\">"+tags2+"</div>" +
+                "<div class=\"q\">"+q+"</div><br>" +
+                "<div class=\"a\">" +a+
+                "</div></body></html>");
+        return sb.toString();
+    }
 }
