@@ -32,6 +32,8 @@ public class SearchImpl implements Search {
             //rule
             int cnt = 0;
             double curScore = 0.0;
+            double part1Score = 0.0;
+            double part2Score = 0.0;
             for(int i = 0; i < userQuestion.size(); i ++){
                 String w1 = userQuestion.get(i).getWord();
                 for(int j = 0; j < curQA.getTags1().size(); j ++){
@@ -39,22 +41,22 @@ public class SearchImpl implements Search {
                     if(w1.equals(w2)) {
                         cnt += 1;
                         if (weightDic.containsKey(w1)){
-                            curScore += weightDic.get(w1).doubleValue();
+                            part1Score += weightDic.get(w1).doubleValue();
                         }
                     }
                 }
-                //tags1 is more important than tags
-                curScore *= 10.0;
                 for(int j = 0; j < curQA.getTags2().size(); j ++){
                     String w2 = curQA.getTags2().get(j);
                     if(w1.equals(w2)) {
                         cnt += 1;
                         if (weightDic.containsKey(w1)){
-                            curScore += weightDic.get(w1).doubleValue();
+                            part2Score += weightDic.get(w1).doubleValue();
                         }
                     }
                 }
             }
+            //tags1 is more important than tags
+            curScore = 10.0*part1Score + part2Score;
             if(cnt == (curQA.getTags1().size() + curQA.getTags2().size())){
                 curQA.setScore(curScore);
                 ans.add(curQA);

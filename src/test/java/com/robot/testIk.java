@@ -42,7 +42,7 @@ public class testIk extends BaseTest{
 
     @Test
     public void test(){
-        String sentence = "我已经报完税，现在做清卡，但是不行。怎么办？";
+        String sentence = "抄税清卡可以在18号之后吗？";
         List<Word> words = mySegmentWord.getWordList(sentence, 1);
         Iterator<Word> iterator = words.iterator();
         System.out.println("\nFen ci: ");
