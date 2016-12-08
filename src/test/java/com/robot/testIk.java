@@ -7,12 +7,14 @@ import com.robot.bean.QAEx2;
 import com.robot.bean.Word;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by xing on 2016/9/21.
@@ -29,8 +31,18 @@ public class testIk extends BaseTest{
     private Search search;
 
     @Test
+    public void testManyTimes(){
+        Scanner cin = new Scanner(System.in);
+        String sentence = "";
+        while(cin.hasNext()){
+            sentence = cin.next();
+            System.out.println(sentence);
+        }
+    }
+
+    @Test
     public void test(){
-        String sentence = "请问我该怎么开网上认证的发票呢？请问U棒在线升级哪里操作？";
+        String sentence = "我已经报完税，现在做清卡，但是不行。怎么办？";
         List<Word> words = mySegmentWord.getWordList(sentence, 1);
         Iterator<Word> iterator = words.iterator();
         System.out.println("\nFen ci: ");
@@ -43,7 +55,7 @@ public class testIk extends BaseTest{
             System.out.print(w.getWord() + " ");
         }
         System.out.println("\nSyn words:" );
-        String synDictFile = "dict/customSynonm.dic";
+        String synDictFile = "dict/customSynonm-excel.dic";
         Resource resource = new ClassPathResource(synDictFile);
         try {
             synDictFile = resource.getURL().getPath();
@@ -56,7 +68,7 @@ public class testIk extends BaseTest{
             System.out.print(iterator.next().getWord() + " ");
         }
         System.out.println("\nKB:");
-        String kbFile = "dict/kb.dic";
+        String kbFile = "dict/kb-excel.dic";
         resource = new ClassPathResource(kbFile);
         try {
             kbFile = resource.getURL().getPath();
@@ -67,16 +79,16 @@ public class testIk extends BaseTest{
         iterator = words3.iterator();
         while(iterator.hasNext()){
             System.out.print(iterator.next().getWord() + " ");
-        }
+        }System.out.println();
         //start search
-        String faqFolderPath = "document";
+        String faqFolderPath = "document-excel";
         resource = new ClassPathResource(faqFolderPath);
         try {
             faqFolderPath = resource.getURL().getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String weightDictPath = "dict/weight.dic";
+        String weightDictPath = "dict/weight-excel.dic";
         resource = new ClassPathResource(weightDictPath);
         try {
             weightDictPath = resource.getURL().getPath();
@@ -85,10 +97,13 @@ public class testIk extends BaseTest{
         }
         List<QAEx2> ans = search.search(words3, faqFolderPath, weightDictPath);
         Iterator<QAEx2> it = ans.iterator();
-        System.out.println();
+        System.out.println("search result size = " + ans.size());
+        int log_cnt = 0;
         while(it.hasNext()){
             QAEx2 qa = it.next();
-            System.out.println(qa.getScore());
+            System.out.println("["+qa.getScore()+"]"+qa.getQuestion() + "\n" + qa.getAnswer() + "\n");
+            log_cnt += 1;
+            if(log_cnt >= 3) break;
         }
     }
 }

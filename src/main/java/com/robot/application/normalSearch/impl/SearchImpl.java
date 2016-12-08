@@ -43,6 +43,8 @@ public class SearchImpl implements Search {
                         }
                     }
                 }
+                //tags1 is more important than tags
+                curScore *= 10.0;
                 for(int j = 0; j < curQA.getTags2().size(); j ++){
                     String w2 = curQA.getTags2().get(j);
                     if(w1.equals(w2)) {
@@ -53,7 +55,7 @@ public class SearchImpl implements Search {
                     }
                 }
             }
-            if(cnt == 6){
+            if(cnt == (curQA.getTags1().size() + curQA.getTags2().size())){
                 curQA.setScore(curScore);
                 ans.add(curQA);
             }

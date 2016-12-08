@@ -36,11 +36,13 @@ public class FaqUtil {
                     String[] tags1 = StringUtils.TRIM_STRING(tag1).split(",");
                     List<String> t1 = new ArrayList<String>();
                     for(String s:tags1){
+                        if(s.equals("")) continue;
                         t1.add(s);
                     }
                     String[] tags2 = StringUtils.TRIM_STRING(tag2).split(",");
                     List<String> t2 = new ArrayList<String>();
                     for(String s:tags2){
+                        if(s.equals("")) continue;
                         t2.add(s);
                     }
                     QAEx2 qa = new QAEx2(q, a, t1, t2);

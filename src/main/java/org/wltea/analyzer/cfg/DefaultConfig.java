@@ -18,7 +18,7 @@ public class DefaultConfig implements Configuration {
   /*
 * 分词器默认字典路径
 */
-  private static final String PATH_DIC_MAIN = "dict/mydict.dic";
+  private static final String PATH_DIC_MAIN = "dict/dict-excel.dic";
   private static final String PATH_DIC_QUANTIFIER = "dict/quantifier.dic";
 
   /*
