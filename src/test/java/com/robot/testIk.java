@@ -7,7 +7,6 @@ import com.robot.bean.QAEx2;
 import com.robot.bean.Word;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -55,7 +54,7 @@ public class testIk extends BaseTest{
             System.out.print(w.getWord() + " ");
         }
         System.out.println("\nSyn words:" );
-        String synDictFile = "dict/customSynonm-excel.dic";
+        String synDictFile = "dict/customSynonm-excel-1.dic";
         Resource resource = new ClassPathResource(synDictFile);
         try {
             synDictFile = resource.getURL().getPath();
@@ -68,7 +67,7 @@ public class testIk extends BaseTest{
             System.out.print(iterator.next().getWord() + " ");
         }
         System.out.println("\nKB:");
-        String kbFile = "dict/kb-excel.dic";
+        String kbFile = "dict/kb-excel-1.dic";
         resource = new ClassPathResource(kbFile);
         try {
             kbFile = resource.getURL().getPath();
@@ -81,14 +80,14 @@ public class testIk extends BaseTest{
             System.out.print(iterator.next().getWord() + " ");
         }System.out.println();
         //start search
-        String faqFolderPath = "document-excel";
+        String faqFolderPath = "document-excel-1";
         resource = new ClassPathResource(faqFolderPath);
         try {
             faqFolderPath = resource.getURL().getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String weightDictPath = "dict/weight-excel.dic";
+        String weightDictPath = "dict/weight-excel-1.dic";
         resource = new ClassPathResource(weightDictPath);
         try {
             weightDictPath = resource.getURL().getPath();

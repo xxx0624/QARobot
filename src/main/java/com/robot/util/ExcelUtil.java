@@ -21,19 +21,19 @@ public class ExcelUtil {
         HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(0);
         String dictPath = "C:\\Users\\xing\\workspace\\QARobot\\src\\main\\resources\\dict\\";
         //dict
-        String dictFilePath = dictPath + "dict-excel.dic";
+        String dictFilePath = dictPath + "dict-excel-1.dic";
         int dictPos1 = 4;
         int dictpos2 = 5;
         int dictpos3 = 6;
         BufferedWriter dictWriter = new BufferedWriter(new FileWriter(dictFilePath));
         //synonm dict
-        String synonmDictFilePath = dictPath + "customSynonm-excel.dic";
+        String synonmDictFilePath = dictPath + "customSynonm-excel-1.dic";
         int synonmLeft = 4;
         int synonmRight = 5;
         BufferedWriter synonmDictWriter = new BufferedWriter(new FileWriter(synonmDictFilePath));
         Map<String, String> synonmWords = new HashMap<String, String>();
         //weight dict
-        String weightDictFilePath = dictPath + "weight-excel.dic";
+        String weightDictFilePath = dictPath + "weight-excel-1.dic";
         BufferedWriter weightDictWriter = new BufferedWriter(new FileWriter(weightDictFilePath));
         Map<String, Integer> weightWords = new HashMap<String, Integer>();
         //kb dict
@@ -42,7 +42,7 @@ public class ExcelUtil {
         BufferedWriter kbDictWriter = new BufferedWriter(new FileWriter(kbDictFilePath));
         */
         //document qa
-        String documentPath = "C:\\Users\\xing\\workspace\\QARobot\\src\\main\\resources\\document-excel\\";
+        String documentPath = "C:\\Users\\xing\\workspace\\QARobot\\src\\main\\resources\\document-excel-1\\";
         int qIndex = 9;
         int aIndex = 10;
         List<String> qaList = new ArrayList<String>();
