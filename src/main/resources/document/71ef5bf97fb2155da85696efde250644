@@ -1,0 +1,1 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">CA签名</div><div class="tag2">证书格式错误</div><div class="q">我是新办企业，可是在网厅办理事项进行CA签名时，系统提示CA获取组织机构代码证证书格式错误，无法签名怎么办？</div><br><div class="a">亲，这个问题主要是新版CA的逻辑校验与老版CA不一致引起的，如果遇到这种情况，请把网厅控件升级到最新版（1.19版），就可以解决啦。</div></body></html>

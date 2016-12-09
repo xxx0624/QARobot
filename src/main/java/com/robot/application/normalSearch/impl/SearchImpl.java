@@ -26,6 +26,7 @@ public class SearchImpl implements Search {
         Map<String, Double> weightDic = weightDicUtil.getWeightDic();
 
         List<QAEx2> ans = new ArrayList<QAEx2>();
+        List<QAEx2> backAns = new ArrayList<QAEx2>();
         Iterator<QAEx2> iterator = faqlist.iterator();
         while(iterator.hasNext()){
             QAEx2 curQA = iterator.next();
@@ -34,6 +35,8 @@ public class SearchImpl implements Search {
             double curScore = 0.0;
             double part1Score = 0.0;
             double part2Score = 0.0;
+            double inPart = 1.1;
+            double betweenPart = 1.5;
             for(int i = 0; i < userQuestion.size(); i ++){
                 String w1 = userQuestion.get(i).getWord();
                 for(int j = 0; j < curQA.getTags1().size(); j ++){
@@ -41,7 +44,7 @@ public class SearchImpl implements Search {
                     if(w1.equals(w2)) {
                         cnt += 1;
                         if (weightDic.containsKey(w1)){
-                            part1Score += weightDic.get(w1).doubleValue();
+                            part1Score = part1Score * inPart + weightDic.get(w1).doubleValue();
                         }
                     }
                 }
@@ -50,19 +53,27 @@ public class SearchImpl implements Search {
                     if(w1.equals(w2)) {
                         cnt += 1;
                         if (weightDic.containsKey(w1)){
-                            part2Score += weightDic.get(w1).doubleValue();
+                            part2Score = part2Score * inPart + weightDic.get(w1).doubleValue();
                         }
                     }
                 }
             }
             //tags1 is more important than tags
-            curScore = 10.0*part1Score + part2Score;
-            if(cnt == (curQA.getTags1().size() + curQA.getTags2().size())){
+            curScore = betweenPart * part1Score + part2Score;
+            if(cnt > 0 && cnt == (curQA.getTags1().size() + curQA.getTags2().size())){
                 curQA.setScore(curScore);
                 ans.add(curQA);
             }
+            if(cnt > 0 && cnt < (curQA.getTags1().size() + curQA.getTags2().size())){
+                curQA.setScore(curScore);
+                backAns.add(curQA);
+            }
         }
         sort(ans);
+        if(ans.size() <= 0){
+            sort(backAns);
+            return backAns;
+        }
         return ans;
     }
 

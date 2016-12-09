@@ -1,0 +1,1 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">取票人</div><div class="tag2">不能选取,无法选择</div><div class="q">网上大厅申请代开发票，不能选取取票人，增加取票人，手机验证码也一直收不到，换手机号也收不到，怎么解决呢？</div><br><div class="a">关于取票人维护的正确方式如下:第一步，新建或者修改原办税人员，记得勾选代开发票。第二步，关掉页面，重新打开代开发票页面。第三步，下拉框即可看到刚刚维护的取票人员。千万不能返回原页面操作!!</div></body></html>

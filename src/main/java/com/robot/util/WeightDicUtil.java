@@ -30,10 +30,13 @@ public class WeightDicUtil {
                 br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"));
                 String line = "";
                 int index = 0;
+                String weightSpliter = "~";
                 while((line = br.readLine()) != null){
                     line = StringUtils.TRIM_STRING(line);
+                    //System.out.println("[index:"+index+"]:"+line);
+                    //index ++;
                     if(line == "") break;
-                    String[] slist = line.split(" ");
+                    String[] slist = line.split(weightSpliter);
                     String[] words = slist[0].split(",");
                     Double d = new Double(slist[1]);
                     for(String w:words){

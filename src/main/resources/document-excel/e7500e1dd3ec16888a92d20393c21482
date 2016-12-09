@@ -1,0 +1,1 @@
+<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">代开发票</div><div class="tag2">无反应</div><div class="q">有客户代开发票 点击扣款和保存 输入密码后 就无反应。</div><br><div class="a">是这样的，点击扣款后，税库银会发起扣款，但有时候税库银返回信息会出错或是长时间没有信息返回，页面就会假死。纳税人可关闭页面，然后进首页的代开查询查看代开扣款情况。</div></body></html>
