@@ -1,1 +1,0 @@
-<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">非法字符</div><div class="tag2">购买方</div><div class="q">购买方信息，输入纳税人识别号后，自动带出企业信息，但在保存时提示存在非法字符，如何处理？</div><br><div class="a">可能因为部分企业名称中含有全角的括号或&amp字符，导致无法保存，请纳税人将全角符号改为英文输入法下的半角即可。</div></body></html>
