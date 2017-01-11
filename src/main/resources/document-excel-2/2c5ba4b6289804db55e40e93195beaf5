@@ -1,1 +1,0 @@
-<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">验旧</div><div class="tag2">增值税发票,正在验旧</div><div class="q">增值税发票验旧中，为什么有时候点击验旧后会出现“正在验旧中”，然后就长时间没有反应？</div><br><div class="a">答：网厅通过调用防伪税控接口，读取防伪税控中的发票信息进行验旧，如纳税人发票量较大，或是防伪税控返回状态较慢，就会出现“正在验旧”中的提示，建议用票量较大的纳税人，可分次进行验旧。</div></body></html>

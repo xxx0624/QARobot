@@ -119,9 +119,13 @@ public class ExcelUtil {
                         qString = cellString;
                     }
                     if (j == aIndex) {
-                        String filename = FileService.getStringMD5String(qString + cellString + tags1 + tags2);
-                        qaWriter = new BufferedWriter(new FileWriter(documentPath + filename));
-                        qaWriter.append(QABeanService.createQA(qString, cellString, tags1, tags2));
+                        String filename = FileService.anotherMD5(qString + cellString/* + tags1 + tags2*/);
+                        qaWriter = new BufferedWriter(new FileWriter(documentPath + filename + ".html"));
+                        String tags1String = tags1;
+                        if(synonmWords.containsKey(tags1)) tags1String += "," + synonmWords.get(tags1);
+                        String tags2String = tags2;
+                        if(synonmWords.containsKey(tags2)) tags2String += "," + synonmWords.get(tags2);
+                        qaWriter.append(QABeanService.createQAWithTags(qString, cellString, tags1String, tags2String));
                         qaWriter.flush();
                         qaWriter.close();
                         //qaList.add(qString + cellString);
@@ -265,7 +269,8 @@ public class ExcelUtil {
                                     }
                                 }
                             }
-                        } else {
+                        } else if(dictPosList.get(2).equals(Integer.valueOf(j))
+                                || dictPosList.get(4).equals(Integer.valueOf(j))){
                             for (String w : words) {
                                 if (!w.equals("")) {
                                     if (tags2.equals("")) {
@@ -323,9 +328,41 @@ public class ExcelUtil {
                         qString = cellString;
                     }
                     if (j == aIndex) {
-                        String filename = FileService.getStringMD5String(qString + cellString + tags1 + tags2);
-                        qaWriter = new BufferedWriter(new FileWriter(documentPath + filename));
-                        qaWriter.append(QABeanService.createQA(qString, cellString, tags1, tags2));
+                        String filename = FileService.anotherMD5(qString + cellString/* + tags1 + tags2*/);
+                        qaWriter = new BufferedWriter(new FileWriter(documentPath + filename + ".html"));
+                        //1
+                        String[] tags1String = tags1.trim().split(",");
+                        Set<String> tags1Set = new HashSet<String>();
+                        for(String curS:tags1String){
+                            tags1Set.add(curS);
+                            if(synonmWords.containsKey(curS)) {
+                                for (String nxtS : synonmWords.get(curS).split(",")) {
+                                    tags1Set.add(nxtS);
+                                }
+                            }
+                        }
+                        String tags1Ans = "";
+                        for(String curS:tags1Set){
+                            if(tags1Ans.equals("")) tags1Ans = curS;
+                            else tags1Ans += "," + curS;
+                        }
+                        //2
+                        String[] tags2String = tags2.trim().split(",");
+                        Set<String> tags2Set = new HashSet<String>();
+                        for(String curS:tags2String){
+                            tags2Set.add(curS);
+                            if(synonmWords.containsKey(curS)) {
+                                for (String nxtS : synonmWords.get(curS).split(",")) {
+                                    tags2Set.add(nxtS);
+                                }
+                            }
+                        }
+                        String tags2Ans = "";
+                        for(String curS:tags2Set){
+                            if(tags2Ans.equals("")) tags2Ans = curS;
+                            else tags2Ans += "," + curS;
+                        }
+                        qaWriter.append(QABeanService.createQAWithTags(qString, cellString, tags1Ans, tags2Ans));
                         qaWriter.flush();
                         qaWriter.close();
                         //qaList.add(qString + cellString);
@@ -412,7 +449,7 @@ public class ExcelUtil {
 
     public static List<String> getQAList() throws IOException {
         String[] qaFileNameList = {
-               // "D:\\TJ\\神计机器人相关问答系统\\神计问答语料\\测试题库.xls",
+                //"D:\\TJ\\神计机器人相关问答系统\\神计问答语料\\测试题库.xls",
                 "D:\\TJ\\神计机器人相关问答系统\\神计问答语料\\测试题库2.xls"
         };
         List<String> qaList = new ArrayList<String>();
@@ -478,6 +515,7 @@ public class ExcelUtil {
     }
 
     public static void main(String[] args) throws IOException {
+        // ExcelUtil.ParseExcel();
         ExcelUtil.ParseExcel2();
     }
 }

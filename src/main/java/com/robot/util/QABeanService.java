@@ -56,4 +56,20 @@ public class QABeanService {
                 "</div></body></html>");
         return sb.toString();
     }
+
+    public static String createQAWithTags(String q, String a, String tags1, String tags2) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>" +
+                "<head>" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">" +
+                "<meta  name=\"tag1\"  content=\"" + tags1 + "\"/>" +
+                "<meta  name=\"tag2\"  content=\"" + tags2 + "\"/>" +
+                "</head>" +
+                "<body>" +
+                "<div class=\"q\">" + q + "</div>" +
+                "<br><div class=\"a\">" + a + "</div>" +
+                "</body>" +
+                "</html>");
+        return sb.toString();
+    }
 }

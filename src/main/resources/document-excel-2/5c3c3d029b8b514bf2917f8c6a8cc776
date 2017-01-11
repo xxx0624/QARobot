@@ -1,1 +1,0 @@
-<html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><head><title>Search</title></head><body><div class="tag1">扣缴税存登记</div><div class="tag2">扣缴税款登记,存在纳税人扣缴税款资格,存在资格,监控不通过</div><div class="q">在做：扣缴税存登记时 ，出现存在纳税人扣缴税款资格，监控不通过 为什么？</div><br><div class="a">扣缴税款登记的申请前提是纳税人不存在扣缴税款资格，如果提示，存在纳税人扣缴税款资格，当然不能申请啦。</div></body></html>

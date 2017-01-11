@@ -42,12 +42,15 @@ public class testIk extends BaseTest{
     @Test
     public void test(){
         String[] sentenceList = {
-               // "抄税清卡可以在18号之后吗？",
-               // "什么是抄税清单",
+                "我已经报完税，现在做清卡，但是不行。怎么办？",
+                "什么是抄税清单",
                 "增值税开票软件哪里下载？",
-                "月初抄税是点远程抄报吗？还是办税大厅抄报？",
-                "增值税专用发票一个月最多作废多少张？"
+                "抄报数据上传失败，出现汇总和明细比对不一致，报税失败。问题出在哪里，怎么回事",
+                "我已成功重报了增值税表，还要进行远程抄报吗？？",
+                "抄税清卡可以在18号之后吗？",
+
         };
+        int sentence_id = 0;
         for(String sentence:sentenceList) {
             List<Word> words = mySegmentWord.getWordList(sentence, 1);
             Iterator<Word> iterator = words.iterator();
@@ -104,9 +107,9 @@ public class testIk extends BaseTest{
             }
             List<QAEx2> ans = search.search(words3, faqFolderPath, weightDictPath);
             Iterator<QAEx2> it = ans.iterator();
+            System.out.println("["+sentence_id+"]Question:" + sentence);
             System.out.println("search result size = " + ans.size());
             int log_cnt = 0;
-            System.out.println("Question:" + sentence);
             while (it.hasNext()) {
                 QAEx2 qa = it.next();
                 System.out.println("[" + qa.getScore() + "]" + qa.getQuestion() + "\n" + qa.getAnswer() + "\n");
